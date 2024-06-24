@@ -1,12 +1,28 @@
 <template>
-  <div class="container black-background">
+  <div class="container mx-auto h-screen bg-black">
     <div class="content">
       <h1 class="text-3xl font-bold underline">MIG-25: Foxbat</h1>
-      <div class="image-container">
-        <img src="@/assets/image.jpg" alt="MIG-25 Foxbat" class="image"/>
+      <div class="flex justify-center">
+        <div class="lg:w-[393px] relative">
+          <img
+            src="@/assets/image.jpg"
+            alt="MIG-25 Foxbat"
+            class="relative w-full h-auto"
+          />
+        </div>
       </div>
-      <p class="image-description">The MiG-25 Foxbat is a Soviet supersonic interceptor aircraft that was developed in the 1960s. It is famous for its very high speed and altitude capabilities, as well as its ability to conduct long-range reconnaissance missions. The MiG-25 is equipped with powerful engines and can reach speeds over Mach 3. Although designed for speed and toughness, the Foxbat is not very maneuverable in direct air combat. This aircraft played a major role in the Soviet air force and has been used by other countries around the world.</p>
-      <p class="image-description">by coem</p>
+      <p class="text-base text-center">
+        <span class="text-lg italic font-bold"> Pesawat MiG-25 </span> <br />
+        Foxbat adalah pesawat tempur supersonik Soviet yang dikembangkan pada
+        tahun 1960-an. Pesawat ini terkenal karena kecepatan dan ketinggiannya
+        yang sangat tinggi, serta kemampuannya untuk melakukan misi pengintaian
+        jarak jauh. MiG-25 dilengkapi dengan mesin kuat dan dapat mencapai
+        kecepatan lebih dari Mach 3. Meskipun dirancang untuk kecepatan dan
+        ketangguhan, Foxbat tidak begitu manuverabel dalam pertempuran udara
+        langsung. Pesawat ini memiliki peran utama dalam angkatan udara Soviet
+        dan digunakan oleh negara-negara lain di seluruh dunia.
+      </p>
+      <p class="mt-10 text-3xl italic font-bold text-center">by coem</p>
     </div>
   </div>
 </template>
@@ -21,20 +37,12 @@ export default {
 html, body {
   margin: 0;
   height: 100%;
-  background-color: black; /* Ensure the background covers the whole page */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: black;
-  flex-direction: column;
-}
+
 
 .content {
   text-align: center;
@@ -55,20 +63,15 @@ h1 {
   margin-bottom: 10px;
 }
 
-.image {
-  width: 400px;
-  height: 300px;
-  max-width: 100%;
-  max-height: 500px;
-}
-
 .image-description {
-  color: white;
-  font-size: 16px;
-  text-align: center;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 800px;
-}
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+  }
+
+
 </style>
