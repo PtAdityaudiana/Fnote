@@ -1,12 +1,14 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-900">
     <div class="max-w-lg w-full bg-gray-300 p-8 rounded-lg shadow-lg">
-      <div class="lg:w-[250px] relative flex items-center justify-center">
+      <div class="flex items-center justify-center">
+        <div lg:w-[250px] relative >
         <img
           src="@/assets/image.jpg"
           alt="MIG-25 Foxbat"
           class="relative w-full h-auto"
         />
+        </div>
       </div>
       <h1 class="text-3xl font-bold text-center mb-1">Selamat datang di Fnote</h1>
       <p class="text-base text-center"> <span class="text-lg italic font-bold">Fnote adalah</span> Lorem ipsum dolor 
@@ -57,4 +59,5 @@ const login = () => {
 </script>
 
 <style scoped>
+
 </style>
