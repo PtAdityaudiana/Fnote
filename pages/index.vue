@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 html, body {
-  margin: 0;
+  margin: 1;
   height: 100%;
   display: flex;
   justify-content: center;
