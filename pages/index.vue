@@ -51,12 +51,10 @@ const email = ref('')
 const password = ref('')
 
 const login = () => {
-  // Implementasi login di sini
   console.log('Email:', email.value)
   console.log('Password:', password.value)
 }
 </script>
 
 <style scoped>
-/* Tambahkan style kustom jika diperlukan */
 </style>
