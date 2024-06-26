@@ -1,77 +1,62 @@
 <template>
-  <div class="container mx-auto h-screen bg-black">
-    <div class="content">
-      <h1 class="text-3xl font-bold underline">MIG-25: Foxbat</h1>
-      <div class="flex justify-center">
-        <div class="lg:w-[393px] relative">
-          <img
-            src="@/assets/image.jpg"
-            alt="MIG-25 Foxbat"
-            class="relative w-full h-auto"
+  <div class="min-h-screen flex items-center justify-center bg-gray-900">
+    <div class="max-w-lg w-full bg-gray-300 p-8 rounded-lg shadow-lg">
+      <div class="lg:w-[250px] relative flex items-center justify-center">
+        <img
+          src="@/assets/image.jpg"
+          alt="MIG-25 Foxbat"
+          class="relative w-full h-auto"
+        />
+      </div>
+      <h1 class="text-3xl font-bold text-center mb-1">Selamat datang di Fnote</h1>
+      <p class="text-base text-center"> <span class="text-lg italic font-bold">Fnote adalah</span> Lorem ipsum dolor 
+        sit, amet consectetur adipisicing elit. Error porro, distinctio vero quod
+         optio mollitia, fugit commodi laborum illo, magnam
+          aliquam praesentium possimus sint. Totam nostrum dolore odit illo odio.</p>
+      <h2 class="text-2xl font-bold text-center mb-1">Login</h2>
+      <form @submit.prevent="login">
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 mb-1">Email</label>
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-      </div>
-      <p class="text-base text-center">
-        <span class="text-lg italic font-bold"> Pesawat MiG-25 </span> <br />
-        Foxbat adalah pesawat tempur supersonik Soviet yang dikembangkan pada
-        tahun 1960-an. Pesawat ini terkenal karena kecepatan dan ketinggiannya
-        yang sangat tinggi, serta kemampuannya untuk melakukan misi pengintaian
-        jarak jauh. MiG-25 dilengkapi dengan mesin kuat dan dapat mencapai
-        kecepatan lebih dari Mach 3. Meskipun dirancang untuk kecepatan dan
-        ketangguhan, Foxbat tidak begitu manuverabel dalam pertempuran udara
-        langsung. Pesawat ini memiliki peran utama dalam angkatan udara Soviet
-        dan digunakan oleh negara-negara lain di seluruh dunia.
-      </p>
-      <p class="mt-10 text-3xl italic font-bold text-center">by coem</p>
+        <div class="mb-6">
+          <label for="password" class="block text-gray-700">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300 mt-3"
+        >
+          Login
+        </button>
+      </form>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'IndexPage'
-};
+<script setup>
+import { ref } from 'vue'
+
+const email = ref('')
+const password = ref('')
+
+const login = () => {
+  // Implementasi login di sini
+  console.log('Email:', email.value)
+  console.log('Password:', password.value)
+}
 </script>
 
 <style scoped>
-html, body {
-  margin: 1;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-.content {
-  text-align: center;
-  color: white;
-  width: 100%;
-}
-
-h1 {
-  color: white;
-  font-size: 40px;
-  font-family: 'Roboto', sans-serif;
-  margin-bottom: 40px;
-}
-
-.image-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.image-description {
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 800px;
-  }
-
-
+/* Tambahkan style kustom jika diperlukan */
 </style>
