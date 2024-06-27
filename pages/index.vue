@@ -6,7 +6,7 @@
           <img
             src="@/assets/image.jpg"
             alt="MIG-25 Foxbat"
-            class="relative w-full h-auto"
+            class="relative w-full h-20"
           />
         </div>
       </div>
@@ -28,7 +28,7 @@
             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-        <div class="mb-6">
+        <div class="mb-1">
           <label for="password" class="block text-gray-700">Password</label>
           <input
             type="password"
