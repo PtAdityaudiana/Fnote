@@ -2,19 +2,21 @@
   <div class="min-h-screen flex items-center justify-center bg-gray-900">
     <div class="max-w-lg w-full bg-gray-300 p-8 rounded-lg shadow-lg">
       <div class="flex items-center justify-center">
-        <div lg:w-[250px] relative >
-        <img
-          src="@/assets/image.jpg"
-          alt="MIG-25 Foxbat"
-          class="relative w-full h-auto"
-        />
+        <div lg:w-[250px] relative>
+          <img
+            src="@/assets/image.jpg"
+            alt="MIG-25 Foxbat"
+            class="relative w-full h-auto"
+          />
         </div>
       </div>
       <h1 class="text-3xl font-bold text-center mb-1">Selamat datang di Fnote</h1>
-      <p class="text-base text-center"> <span class="text-lg italic font-bold">Fnote adalah</span> Lorem ipsum dolor 
+      <p class="text-base text-center">
+        <span class="text-lg italic font-bold">Fnote adalah</span> Lorem ipsum dolor 
         sit, amet consectetur adipisicing elit. Error porro, distinctio vero quod
-         optio mollitia, fugit commodi laborum illo, magnam
-          aliquam praesentium possimus sint. Totam nostrum dolore odit illo odio.</p>
+        optio mollitia, fugit commodi laborum illo, magnam
+        aliquam praesentium possimus sint. Totam nostrum dolore odit illo odio.
+      </p>
       <h2 class="text-2xl font-bold text-center mb-1">Login</h2>
       <form @submit.prevent="login">
         <div class="mb-4">
@@ -32,14 +34,14 @@
             type="password"
             id="password"
             v-model="password"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            class="w-full mb-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
+        <p class="text-center mb-1 mt-1">Belum punya akun? <a href="/signup" class="text-blue-500 hover:underline">Signup</a></p>
         <button
           type="submit"
           class="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300 mt-3"
-        >
-          Login
+        >Login
         </button>
       </form>
     </div>
@@ -59,5 +61,4 @@ const login = () => {
 </script>
 
 <style scoped>
-
 </style>
