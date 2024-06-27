@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-400 via-gray-600 to-blue-800">
-      <div class="max-w-lg w-full bg-gradient-to-r from-rose-100 to-teal-100 p-8 rounded-lg shadow-lg">
+      <div class="max-w-lg w-full bg-gray-300 p-8 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-center mb-6">Signup</h2>
         <form @submit.prevent="signup">
           

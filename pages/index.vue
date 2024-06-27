@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-bl from-gray-400 via-gray-600 to-blue-800">
-    <div class="max-w-lg w-full bg-gradient-to-r from-rose-100 to-teal-100 p-8 rounded-lg shadow-lg">
+    <div class="max-w-lg w-full bg-gray-300 p-8 rounded-lg shadow-lg">
       <div class="flex items-center justify-center">
         <div lg:w-[250px] relative>
           <img
