@@ -2,11 +2,11 @@
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-bl from-gray-400 via-gray-600 to-blue-800">
     <div class="max-w-lg w-full bg-gray-300 p-8 rounded-lg shadow-lg">
       <div class="flex items-center justify-center">
-        <div lg:w-[250px] relative>
+        <div lg:w-[500px] relative>
           <img
-            src="@/assets/image.jpg"
-            alt="MIG-25 Foxbat"
-            class="relative w-full h-20"
+            src="@/assets/logo.png"
+            alt="Fnote logo"
+            class="relative w-full h-40"
           />
         </div>
       </div>
