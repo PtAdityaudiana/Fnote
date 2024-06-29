@@ -37,6 +37,7 @@
             class="w-full mb-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
+        <p v-if="errorMessage" class="text-red-500 text-center mb-2">{{ errorMessage }}</p>
         <p class="text-center mb-1 mt-1">Belum punya akun? <a href="/signup" class="text-blue-500 hover:underline">Signup</a></p>
         <button
           type="submit"
@@ -48,15 +49,28 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '~/plugins/firebase'
 
-const email = ref('')
-const password = ref('')
+const email = ref<string>('')
+const password = ref<string>('')
+const errorMessage = ref<string>('')
 
-const login = () => {
-  console.log('Email:', email.value)
-  console.log('Password:', password.value)
+const router = useRouter()
+
+const login = async () => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+    console.log('Login successful:', userCredential)
+    // Redirect to dashboard after successful login
+    router.push('/dashboard')
+  } catch (error) {
+    console.error('Login error:', error)
+    errorMessage.value = 'Invalid email or password.'
+  }
 }
 </script>
 
