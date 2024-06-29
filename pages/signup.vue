@@ -76,7 +76,7 @@ const signup = async () => {
         window.location.reload()
       })
     } catch (error) {
-      alert('Signup error: ' + error.message)
+      alert('Signup error: ' + (error as Error).message)
     }
   } else {
     errorMessage.value = 'Passwords do not match'
