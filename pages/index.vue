@@ -12,10 +12,9 @@
       </div>
       <h1 class="text-3xl font-bold text-center mb-1">Selamat datang di Fnote</h1>
       <p class="text-base text-center">
-        <span class="text-lg italic font-bold">Fnote adalah</span> Lorem ipsum dolor 
-        sit, amet consectetur adipisicing elit. Error porro, distinctio vero quod
-        optio mollitia, fugit commodi laborum illo, magnam
-        aliquam praesentium possimus sint. Totam nostrum dolore odit illo odio.
+        <span class="text-lg italic font-bold">Fnote adalah</span> aplikasi catatan yang dirancang untuk 
+        membantu seseorang untuk mencatat ide, daftar tugas, 
+        dan informasi penting dengan mudah dan efisien.
       </p>
       <h2 class="text-2xl font-bold text-center mb-1">Login</h2>
       <form @submit.prevent="login">

@@ -22,7 +22,7 @@
           />
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-gray-700">Password</label>
+          <label for="password" class="block text-gray-700">Password (min 6 character)</label>
           <input
             type="password"
             id="password"
