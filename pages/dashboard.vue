@@ -51,7 +51,7 @@
           v-model="searchKeyword"
           @input="searchNotes"
           class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-          placeholder="Search notes by tittle"
+          placeholder="Search notes by title"
         />
       </div>
 
