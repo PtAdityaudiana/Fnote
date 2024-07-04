@@ -106,7 +106,7 @@ import { db, auth } from '~/plugins/firebase'
 
 const title = ref('')
 const content = ref('')
-const category = ref('Basic') // Default category
+const category = ref('Basic') 
 const notes = ref([])
 const searchKeyword = ref('')
 const startDate = ref('')
@@ -125,7 +125,7 @@ const fetchNotes = async () => {
   const q = query(notesCollection, where('user_id', '==', user.uid))
   const querySnapshot = await getDocs(q)
   
-  // Mengambil data catatan dan mengurutkannya berdasarkan kategori
+  
   notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     .sort((a, b) => {
       if (a.category === 'Important' && b.category !== 'Important') return -1;
@@ -153,7 +153,7 @@ const createNote = async () => {
     created_at: Timestamp.now(),
     updated_at: Timestamp.now(),
     user_id: user.uid,
-    user_name: user.displayName || 'Anonymous', // Store the username
+    user_name: user.displayName || 'Anonymous', 
   }
 
   await addDoc(collection(db, 'notes'), note)
@@ -226,7 +226,7 @@ const startEdit = (note) => {
 const clearForm = () => {
   title.value = ''
   content.value = ''
-  category.value = 'Basic' // Reset category to default
+  category.value = 'Basic' 
   currentNoteId.value = ''
   editMode.value = false
   showForm.value = false
@@ -244,12 +244,12 @@ const logout = async () => {
 }
 
 onMounted(async () => {
-  // Tunggu sampai auth.currentUser tersedia
+  
   const user = auth.currentUser
   if (user) {
     await fetchNotes()
   } else {
-    // Jika pengguna belum tersedia, tunggu sampai tersedia
+    
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         await fetchNotes()
