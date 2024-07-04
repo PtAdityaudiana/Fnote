@@ -25,11 +25,13 @@
           ></textarea>
         </div>
         <div class="mb-4">
-          <input
+          <select
             v-model="category"
             class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-            placeholder="Category"
-          />
+          >
+            <option value="Basic">Basic</option>
+            <option value="Important">Important</option>
+          </select>
         </div>
         <button
           type="submit"
@@ -85,6 +87,7 @@
           <h3 class="text-xl font-bold mb-2">{{ note.title }}</h3>
           <p class="mb-2">{{ note.content }}</p>
           <p class="mb-2 text-sm text-gray-400">{{ note.category }}</p>
+          <p class="mb-2 text-sm text-gray-400">Created at: {{ note.created_at.toDate().toLocaleString() }}</p>
           <div class="flex space-x-2">
             <button @click="removeNote(note.id)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300">Delete</button>
             <button @click="startEdit(note)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300">Edit</button>
@@ -103,7 +106,7 @@ import { db, auth } from '~/plugins/firebase'
 
 const title = ref('')
 const content = ref('')
-const category = ref('')
+const category = ref('Basic') // Default category
 const notes = ref([])
 const searchKeyword = ref('')
 const startDate = ref('')
@@ -121,7 +124,14 @@ const fetchNotes = async () => {
   const notesCollection = collection(db, 'notes')
   const q = query(notesCollection, where('user_id', '==', user.uid))
   const querySnapshot = await getDocs(q)
+  
+  // Mengambil data catatan dan mengurutkannya berdasarkan kategori
   notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    .sort((a, b) => {
+      if (a.category === 'Important' && b.category !== 'Important') return -1;
+      if (b.category === 'Important' && a.category !== 'Important') return 1;
+      return 0;
+    });
 }
 
 const handleSubmit = async () => {
@@ -190,12 +200,16 @@ const filterNotesByDate = async () => {
   if (!user) return
 
   const notesCollection = collection(db, 'notes')
+  const start = Timestamp.fromDate(new Date(startDate.value))
+  const end = Timestamp.fromDate(new Date(endDate.value))
+
   const q = query(
     notesCollection,
     where('user_id', '==', user.uid),
-    where('created_at', '>=', Timestamp.fromDate(new Date(startDate.value))),
-    where('created_at', '<=', Timestamp.fromDate(new Date(endDate.value)))
+    where('created_at', '>=', start),
+    where('created_at', '<=', end)
   )
+
   const querySnapshot = await getDocs(q)
   notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
@@ -212,7 +226,7 @@ const startEdit = (note) => {
 const clearForm = () => {
   title.value = ''
   content.value = ''
-  category.value = ''
+  category.value = 'Basic' // Reset category to default
   currentNoteId.value = ''
   editMode.value = false
   showForm.value = false
@@ -225,8 +239,8 @@ const cancelEdit = () => {
 const logout = async () => {
   await auth.signOut()
   router.push('/').then(() => {
-        window.location.reload()
-      })
+    window.location.reload()
+  })
 }
 
 onMounted(async () => {
@@ -253,7 +267,7 @@ body {
   color: #f5f5f5;
 }
 
-input, textarea {
+input, textarea, select {
   color: #f5f5f5;
 }
 
