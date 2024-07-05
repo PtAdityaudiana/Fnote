@@ -200,15 +200,19 @@ const filterNotesByDate = async () => {
   if (!user) return
 
   const notesCollection = collection(db, 'notes')
-  const start = Timestamp.fromDate(new Date(startDate.value))
-  const end = Timestamp.fromDate(new Date(endDate.value))
+  let q = query(notesCollection, where('user_id', '==', user.uid))
 
-  const q = query(
-    notesCollection,
-    where('user_id', '==', user.uid),
-    where('created_at', '>=', start),
-    where('created_at', '<=', end)
-  )
+  if (startDate.value && endDate.value) {
+    const start = Timestamp.fromDate(new Date(startDate.value))
+    const end = Timestamp.fromDate(new Date(endDate.value))
+
+    q = query(
+      notesCollection,
+      where('user_id', '==', user.uid),
+      where('created_at', '>=', start),
+      where('created_at', '<=', end)
+    )
+  }
 
   const querySnapshot = await getDocs(q)
   notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
