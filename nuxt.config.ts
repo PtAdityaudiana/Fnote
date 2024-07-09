@@ -12,4 +12,6 @@ export default defineNuxtConfig({
   plugins: [
     { src: '~/plugins/firebase', mode: 'client' },
   ],
+
+  
 })

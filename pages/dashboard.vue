@@ -53,27 +53,13 @@
           class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
           placeholder="Search notes by title"
         />
-      </div>
-
-      <div class="mb-8 flex space-x-4">
-        <div class="flex-1">
-          <label class="block mb-1">Filter by start date</label>
-          <input
-            type="date"
-            v-model="startDate"
-            @change="filterNotesByDate"
-            class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-          />
-        </div>
-        <div class="flex-1">
-          <label class="block mb-1">Filter by end date</label>
-          <input
-            type="date"
-            v-model="endDate"
-            @change="filterNotesByDate"
-            class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-          />
-        </div>
+        <label for="dateFilter" class="block mt-4 mb-2 text-gray-400">Filter by date</label>
+        <input
+          type="date"
+          id="dateFilter"
+          v-model="selectedDate"
+          class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+        />
       </div>
 
       <button
@@ -81,9 +67,9 @@
         class="w-full py-2 mb-8 bg-green-500 text-white rounded-lg hover:bg-green-700 transition duration-300"
       >Add Note</button>
 
-      <div v-if="notes.length">
+      <div v-if="filteredNotes.length">
         <h2 class="text-2xl font-bold mb-4">Notes</h2>
-        <div v-for="note in notes" :key="note.id" class="mb-6 p-4 border border-gray-700 bg-gray-800 rounded-lg">
+        <div v-for="note in filteredNotes" :key="note.id" class="mb-6 p-4 border border-gray-700 bg-gray-800 rounded-lg">
           <h3 class="text-xl font-bold mb-2">{{ note.title }}</h3>
           <p class="mb-2">{{ note.content }}</p>
           <p class="mb-2 text-sm text-gray-400">{{ note.category }}</p>
@@ -99,21 +85,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, query, where, Timestamp, doc } from 'firebase/firestore'
 import { db, auth } from '~/plugins/firebase'
 
-const title = ref('')
-const content = ref('')
-const category = ref('Basic') 
-const notes = ref([])
-const searchKeyword = ref('')
-const startDate = ref('')
-const endDate = ref('')
-const editMode = ref(false)
-const currentNoteId = ref('')
-const showForm = ref(false)
+// Note type definition
+interface Note {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+}
+
+const title = ref<string>('')
+const content = ref<string>('')
+const category = ref<string>('Basic')
+const notes = ref<Note[]>([])
+const searchKeyword = ref<string>('')
+const selectedDate = ref<string>('')
+const editMode = ref<boolean>(false)
+const currentNoteId = ref<string>('')
+const showForm = ref<boolean>(false)
 
 const router = useRouter()
 
@@ -124,9 +119,8 @@ const fetchNotes = async () => {
   const notesCollection = collection(db, 'notes')
   const q = query(notesCollection, where('user_id', '==', user.uid))
   const querySnapshot = await getDocs(q)
-  
-  
-  notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+  notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Note))
     .sort((a, b) => {
       if (a.category === 'Important' && b.category !== 'Important') return -1;
       if (b.category === 'Important' && a.category !== 'Important') return 1;
@@ -146,17 +140,15 @@ const createNote = async () => {
   const user = auth.currentUser
   if (!user) return
 
-  const note = {
+  const note: Omit<Note, 'id'> = {
     title: title.value,
     content: content.value,
     category: category.value,
     created_at: Timestamp.now(),
     updated_at: Timestamp.now(),
-    user_id: user.uid,
-    user_name: user.displayName || 'Anonymous', 
   }
 
-  await addDoc(collection(db, 'notes'), note)
+  await addDoc(collection(db, 'notes'), { ...note, user_id: user.uid, user_name: user.displayName || 'Anonymous' })
   await fetchNotes()
   clearForm()
 }
@@ -192,33 +184,10 @@ const searchNotes = async () => {
     where('title', '==', searchKeyword.value)
   )
   const querySnapshot = await getDocs(q)
-  notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+  notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Note))
 }
 
-const filterNotesByDate = async () => {
-  const user = auth.currentUser
-  if (!user) return
-
-  const notesCollection = collection(db, 'notes')
-  let q = query(notesCollection, where('user_id', '==', user.uid))
-
-  if (startDate.value && endDate.value) {
-    const start = Timestamp.fromDate(new Date(startDate.value))
-    const end = Timestamp.fromDate(new Date(endDate.value))
-
-    q = query(
-      notesCollection,
-      where('user_id', '==', user.uid),
-      where('created_at', '>=', start),
-      where('created_at', '<=', end)
-    )
-  }
-
-  const querySnapshot = await getDocs(q)
-  notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-}
-
-const startEdit = (note) => {
+const startEdit = (note: Note) => {
   title.value = note.title
   content.value = note.content
   category.value = note.category
@@ -230,7 +199,7 @@ const startEdit = (note) => {
 const clearForm = () => {
   title.value = ''
   content.value = ''
-  category.value = 'Basic' 
+  category.value = 'Basic'
   currentNoteId.value = ''
   editMode.value = false
   showForm.value = false
@@ -247,13 +216,22 @@ const logout = async () => {
   })
 }
 
+const filteredNotes = computed(() => {
+  if (!selectedDate.value) {
+    return notes.value
+  }
+  const selectedTimestamp = new Date(selectedDate.value).getTime()
+  return notes.value.filter(note => {
+    const noteTimestamp = note.created_at.toDate().getTime()
+    return noteTimestamp >= selectedTimestamp && noteTimestamp < selectedTimestamp + 86400000 // 86400000 ms in a day
+  })
+})
+
 onMounted(async () => {
-  
   const user = auth.currentUser
   if (user) {
     await fetchNotes()
   } else {
-    
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         await fetchNotes()
