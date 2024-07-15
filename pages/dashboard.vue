@@ -49,7 +49,6 @@
       <div class="mb-8">
         <input
           v-model="searchKeyword"
-          @input="searchNotes"
           class="w-full px-4 py-2 border border-gray-700 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
           placeholder="Search notes by title"
         />
@@ -101,7 +100,7 @@ interface Note {
 }
 
 const title = ref<string>('')
-const content = ref<string>('')
+const content = ref<string>('') 
 const category = ref<string>('Basic')
 const notes = ref<Note[]>([])
 const searchKeyword = ref<string>('')
@@ -173,20 +172,6 @@ const removeNote = async (id: string) => {
   await fetchNotes()
 }
 
-const searchNotes = async () => {
-  const user = auth.currentUser
-  if (!user) return
-
-  const notesCollection = collection(db, 'notes')
-  const q = query(
-    notesCollection,
-    where('user_id', '==', user.uid),
-    where('title', '==', searchKeyword.value)
-  )
-  const querySnapshot = await getDocs(q)
-  notes.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Note))
-}
-
 const startEdit = (note: Note) => {
   title.value = note.title
   content.value = note.content
@@ -217,14 +202,22 @@ const logout = async () => {
 }
 
 const filteredNotes = computed(() => {
-  if (!selectedDate.value) {
-    return notes.value
+  let result = notes.value;
+
+  if (searchKeyword.value) {
+    const keyword = searchKeyword.value.toLowerCase();
+    result = result.filter(note => note.title.toLowerCase().includes(keyword));
   }
-  const selectedTimestamp = new Date(selectedDate.value).getTime()
-  return notes.value.filter(note => {
-    const noteTimestamp = note.created_at.toDate().getTime()
-    return noteTimestamp >= selectedTimestamp && noteTimestamp < selectedTimestamp + 86400000 // 86400000 ms in a day
-  })
+
+  if (selectedDate.value) {
+    const selectedTimestamp = new Date(selectedDate.value).getTime();
+    result = result.filter(note => {
+      const noteTimestamp = note.created_at.toDate().getTime();
+      return noteTimestamp >= selectedTimestamp && noteTimestamp < selectedTimestamp + 86400000;
+    });
+  }
+
+  return result;
 })
 
 onMounted(async () => {
